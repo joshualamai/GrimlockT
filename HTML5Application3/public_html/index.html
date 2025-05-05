@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grimlock – Welcome</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="intro-page">
+  <!-- Navigation Bar -->
+  <nav class="nav-custom">
+    <div class="container nav-logo-container">
+      <img src="logo.png" alt="Dino-Bot Logo" class="nav-logo" />
+      <a href="index.html">Home</a>
+    </div>
+  </nav>
+  
+  <div class="container main-content">
+    <header class="text-center mb-4">
+      <h1 class="display-4">Welcome to Grimlock</h1>
+      <p class="lead">The Password Cracker Game!</p>
+    </header>
+    
+    <main>
+      <div class="card mb-4">
+        <div class="card-body">
+          <p class="card-text">
+            Welcome to Grimlock! This interactive game challenges you to crack passwords of increasing difficulty using logic, pattern recognition, and cybersecurity skills. Each level introduces new password types and real-world attack scenarios, helping you learn why strong passwords and good security habits matter.
+          </p>
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item">
+              <strong>Tutorial:</strong> Learn the basics by unscrambling a simple password. Practice using the workings box and see how hints work before starting the real challenge.
+            </li>
+            <li class="list-group-item">
+              <strong>Level 1:</strong> Crack a very weak password (like a simple word or number). See how easily attackers can guess common passwords.
+            </li>
+            <li class="list-group-item">
+              <strong>Level 2:</strong> Unscramble a weak or medium password (may include numbers or uppercase letters). Learn how small changes add some security, but are still vulnerable.
+            </li>
+            <li class="list-group-item">
+              <strong>Level 3:</strong> Unscramble a strong password (includes uppercase, lowercase, numbers, and symbols). Discover why complexity makes passwords harder to crack.
+            </li>
+            <li class="list-group-item">
+              <strong>Level 4:</strong> Combine words and numbers to find the password. See how attackers use wordlists and patterns to break these.
+            </li>
+            <li class="list-group-item">
+              <strong>Level 5:</strong> Spot and solve repeating or keyboard patterns. Many people use these, but so do hackers!
+            </li>
+            <li class="list-group-item">
+              <strong>Level 6:</strong> Break a simple cipher. Learn how even "encrypted" passwords can be vulnerable if the cipher is weak.
+            </li>
+            <li class="list-group-item">
+              <strong>Level 7:</strong> Phishing simulation! Test your ability to spot a phishing email and avoid social engineering attacks.
+            </li>
+            <li class="list-group-item">
+              <strong>Level 8:</strong> Learn about password managers and why they are essential for staying secure online.
+            </li>
+          </ul>
+          <p class="card-text">
+            Use the <strong>workings box</strong> under each input to jot down your ideas or try combinations. If you get stuck, use the <strong>Clear Hint</strong> button (at a points cost) for help. You can <strong>Give Up</strong> at any time to end the game and see your score. Try to complete all levels and see how your skills improve!
+          </p>
+          <div class="alert alert-info">
+            <p class="mb-0">If you want to monitor guest progress, view analytics, or access extra features, log in as admin:<br>
+            Username: admin<br>
+            Password: adminpass</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-modes text-center">
+        <h2 class="mb-3">Choose Your Mode:</h2>
+        <a href="admin.html" class="btn btn-primary">Login as Admin</a>
+        <a href="guest.html" class="btn btn-success">Play as Guest</a>
+      </div>
+      
+      <div class="text-center mt-4">
+        <button id="view-highscore-btn" class="btn btn-warning" onclick="toggleHighscore()">View Highscore</button>
+      </div>
+      
+      <div id="highscore-details" class="mt-3"></div>
+    </main>
+  </div>
+  
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Include the shared script -->
+  <script src="scripts.js"></script>
+  <script>
+    function toggleHighscore() {
+      console.log("toggleHighscore called.");
+      const hsDiv = document.getElementById("highscore-details");
+      if (hsDiv.style.display === "none" || hsDiv.style.display === "") {
+        displayHighScoreDetails();
+        hsDiv.style.display = "block";
+      } else {
+        hsDiv.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>

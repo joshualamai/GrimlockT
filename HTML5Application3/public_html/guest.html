@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grimlock – Guest Mode</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="guest-page">
+  <!-- Navigation Bar -->
+  <nav class="nav-custom">
+    <div class="container nav-logo-container">
+      <img src="logo.png" alt="Dino-Bot Logo" class="nav-logo" />
+      <a href="index.html">Home</a>
+    </div>
+  </nav>
+  
+  <!-- Header displaying the guest id -->
+  <header>
+    <div id="user-info" class="container text-end mt-2"></div>
+  </header>
+  
+  <!-- Game Container -->
+  <div class="container game-container">
+    <h1 class="text-center mb-4">Password Cracker Game</h1>
+    
+    <!-- Difficulty Selection -->
+    <div id="difficulty-selection" class="text-center">
+      <h2>Select Difficulty Level</h2>
+      <div class="difficulty-options">
+        <button onclick="setDifficulty('easy')" class="difficulty-btn">Easy</button>
+        <button onclick="setDifficulty('medium')" class="difficulty-btn">Medium</button>
+        <button onclick="setDifficulty('hard')" class="difficulty-btn">Hard</button>
+      </div>
+    </div>
+    
+    <!-- High Score Screen -->
+    <div id="high-score" class="text-center" style="display: none;">
+      <h2>Game Over</h2>
+      <p id="final-points" class="h4"></p>
+      <p id="final-level" class="h4"></p>
+      <div id="leaderboard" class="mt-4">
+        <h3>Top Score</h3>
+        <p id="highest-score" class="lead">No high score available.</p>
+      </div>
+      <button onclick="restartGame()" class="btn btn-primary mt-3">Play Again</button>
+      <div id="difficulty-progress-buttons" style="margin-top: 20px;"></div>
+    </div>
+    
+    <!-- Level Info -->
+    <div id="level-info" class="text-center mb-4">
+      <div class="row">
+        <div class="col">
+          <p>Current Level: <span id="current-level" class="h4">1</span></p>
+        </div>
+        <div class="col">
+          <p>Points: <span id="points" class="h4">100</span></p>
+        </div>
+        <div class="col">
+          <p>Time left: <span id="timer-display" class="h4"></span></p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tutorial Level Section -->
+    <div id="tutorial-section" class="level-section" style="display: none;">
+      <h2>Tutorial: How to Crack a Scrambled Password</h2>
+      <div class="password-display">
+        <p>Example scrambled password: <span id="tutorial-scrambled">elppa</span></p>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" id="tutorial-input" class="form-control" placeholder="Unscramble the password (hint: it's a fruit)" />
+        <button onclick="checkTutorial()" class="btn btn-primary">Submit</button>
+        <button onclick="document.getElementById('tutorial-input').value=''" class="btn btn-secondary">Clear</button>
+      </div>
+      <textarea id="tutorial-workings" class="form-control mb-2" rows="2" placeholder="Workings: Use this space to try combinations..."></textarea>
+      <div id="tutorial-message" class="message"></div>
+      <div class="alert alert-info mt-2">
+        <strong>How to crack it:</strong> Rearrange the letters to form a real word. For example, 'elppa' unscrambles to 'apple'. Try typing 'apple' above and submit!
+      </div>
+    </div>
+    <!-- Medium Intro Section -->
+    <div id="medium-intro-section" class="level-section" style="display: none;">
+      <h2>Welcome to Medium Difficulty!</h2>
+      <p>Passwords now use longer words, more combinations, and a word bank. Hints are still available, but the challenge is greater than Easy mode.</p>
+      <button class="btn btn-primary" onclick="startMediumLevel()">Continue</button>
+    </div>
+    <!-- Hard Intro Section -->
+    <div id="hard-intro-section" class="level-section" style="display: none;">
+      <h2>Welcome to Hard Difficulty!</h2>
+      <p>Passwords are even longer, may use ciphers, and hints are disabled. You'll need advanced logic and pattern recognition. Good luck!</p>
+      <button class="btn btn-primary" onclick="startHardLevel()">Continue</button>
+    </div>
+    
+    <!-- Level 1: Password Section -->
+    <div id="password-section" class="level-section">
+      <div class="password-display">
+        <p>The scrambled password is: <span id="password-display"></span></p>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" id="password-input" class="form-control" placeholder="Enter the unscrambled password" />
+        <button onclick="verifyPassword()" class="btn btn-primary">Submit</button>
+        <button onclick="document.getElementById('password-input').value=''" class="btn btn-secondary">Clear</button>
+      </div>
+      <textarea id="workings1" class="form-control mb-2" rows="2" placeholder="Workings: Use this space to try combinations..."></textarea>
+      <button id="clear-hint-btn-l1" onclick="clearHint()" class="btn btn-warning">Use Clear Hint (Costs 50% of Points)</button>
+      <div id="clear-hint-display" class="mt-2 fw-bold"></div>
+    </div>
+    
+    <!-- Level 2: Scrambled Password Section -->
+    <div id="scrambled-password-section" class="level-section" style="display: none;">
+      <h2>Level 2: Number Substitution Challenge</h2>
+      <div class="password-display">
+        <p>The scrambled password is: <span id="scrambled-password"></span></p>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" id="scrambled-input" class="form-control" placeholder="Enter the unscrambled password" />
+        <button onclick="checkScrambledPassword()" class="btn btn-primary">Submit Unscrambled</button>
+        <button onclick="document.getElementById('scrambled-input').value=''" class="btn btn-secondary">Clear</button>
+        <button id="show-leetspeak-btn" onclick="showLeetspeakVersion()" class="btn btn-success" style="display:none;">Show Leetspeak Version</button>
+        <div id="leetspeak-result" class="mt-2 fw-bold"></div>
+        <div id="leetspeak-input-section" style="display:none;">
+          <input type="text" id="leetspeak-input" class="form-control mt-2" placeholder="Enter the leetspeak password" />
+          <button onclick="checkLeetspeakPassword()" class="btn btn-primary mt-2">Submit Leetspeak</button>
+        </div>
+      </div>
+      <textarea id="workings2" class="form-control mb-2" rows="2" placeholder="Workings: Use this space to try combinations..."></textarea>
+      <button id="clear-hint-btn-l2" onclick="clearHint()" class="btn btn-warning">Use Clear Hint (Costs 50% of Points)</button>
+      <div id="clear-hint-display2" class="mt-2 fw-bold"></div>
+    </div>
+    
+    <!-- Level 3: Strong Password Section -->
+    <div id="strong-password-section" class="level-section" style="display: none;">
+      <h2>Level 3: Keyboard Pattern Challenge</h2>
+      <div class="password-display">
+        <p>The scrambled password is: <span id="strong-password"></span></p>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" id="strong-input" class="form-control" placeholder="Enter the unscrambled password" />
+        <button onclick="checkStrongPassword()" class="btn btn-primary">Submit</button>
+        <button onclick="document.getElementById('strong-input').value=''" class="btn btn-secondary">Clear</button>
+      </div>
+      <textarea id="workings3" class="form-control mb-2" rows="2" placeholder="Workings: Use this space to try combinations..."></textarea>
+      <button id="clear-hint-btn-l3" onclick="clearHint()" class="btn btn-warning">Use Clear Hint (Costs 50% of Points)</button>
+      <div id="clear-hint-display3" class="mt-2 fw-bold"></div>
+    </div>
+
+    <!-- Level 4: Combined Words Section -->
+    <div id="combined-words-section" class="level-section" style="display: none;">
+      <h2>Level 4: Combined Words Challenge</h2>
+      <div class="password-display">
+        <p>The scrambled password is: <span id="combined-password"></span></p>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" id="combined-input" class="form-control" placeholder="Enter the unscrambled password" />
+        <button onclick="checkCombinedPassword()" class="btn btn-primary">Submit</button>
+        <button onclick="document.getElementById('combined-input').value=''" class="btn btn-secondary">Clear</button>
+      </div>
+      <textarea id="workings4" class="form-control mb-2" rows="2" placeholder="Workings: Use this space to try combinations..."></textarea>
+      <div id="word-bank" class="alert alert-info" style="display: none;">
+        <strong>Word Bank:</strong> <span id="word-bank-content"></span>
+      </div>
+      <button id="clear-hint-btn-l4" onclick="clearHint()" class="btn btn-warning">Use Clear Hint (Costs 50% of Points)</button>
+      <div id="clear-hint-display4" class="mt-2 fw-bold"></div>
+    </div>
+
+    <!-- Level 5: Pattern Recognition Section -->
+    <div id="pattern-section" class="level-section" style="display: none;">
+      <h2>Level 5: Pattern Recognition</h2>
+      <div class="password-display">
+        <p>The scrambled password is: <span id="pattern-password"></span></p>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" id="pattern-input" class="form-control" placeholder="Enter the unscrambled password" />
+        <button onclick="checkPatternPassword()" class="btn btn-primary">Submit</button>
+        <button onclick="document.getElementById('pattern-input').value=''" class="btn btn-secondary">Clear</button>
+      </div>
+      <textarea id="workings5" class="form-control mb-2" rows="2" placeholder="Workings: Use this space to try combinations..."></textarea>
+      <div id="sequence-bank" class="alert alert-info" style="display: none;">
+        <strong>Sequence Bank:</strong> <span id="sequence-bank-content"></span>
+      </div>
+      <button id="clear-hint-btn-l5" onclick="clearHint()" class="btn btn-warning">Use Clear Hint (Costs 50% of Points)</button>
+      <div id="clear-hint-display5" class="mt-2 fw-bold"></div>
+    </div>
+
+    <!-- Level 6: Cipher Challenge Section -->
+    <div id="cipher-section" class="level-section" style="display: none;">
+      <h2>Level 6: Cipher Challenge</h2>
+      <div class="password-display">
+        <p>The encrypted password is: <span id="cipher-password"></span></p>
+      </div>
+      <div class="cipher-key-collection">
+        <p>Collected Cipher Keys: <span id="cipher-keys-found">0/3</span></p>
+        <div id="cipher-key-display" class="alert alert-info"></div>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" id="cipher-input" class="form-control" placeholder="Enter the decrypted password" />
+        <button onclick="checkCipherPassword()" class="btn btn-primary">Submit</button>
+        <button onclick="document.getElementById('cipher-input').value=''" class="btn btn-secondary">Clear</button>
+      </div>
+      <textarea id="workings6" class="form-control mb-2" rows="2" placeholder="Workings: Use this space to try combinations..."></textarea>
+      <button id="clear-hint-btn-l6" onclick="clearHint()" class="btn btn-warning">Use Clear Hint (Costs 50% of Points)</button>
+      <div id="clear-hint-display6" class="mt-2 fw-bold"></div>
+    </div>
+
+    <!-- Level 7: Phishing Simulation Section -->
+    <div id="phishing-section" class="level-section" style="display: none;">
+      <h2>Level 7: Phishing Simulation</h2>
+      <div class="password-display">
+        <p><strong>Email:</strong></p>
+        <div style="background:#fffde7; border:1px solid #FFD700; padding:10px; margin-bottom:10px;">
+          <strong>From:</strong> support@micros0ft.com<br>
+          <strong>Subject:</strong> Urgent: Account Verification Needed!<br>
+          <strong>Message:</strong><br>
+          Dear user,<br>
+          We noticed suspicious activity in your account. Please <a href="#" style="color:#b71c1c;">click here</a> to verify your information and avoid suspension.<br>
+          Thank you,<br>
+          Microsoft Security Team
+        </div>
+        <p>Is this email safe or a phishing attempt?</p>
+        <button onclick="checkPhishingAnswer(true)" class="btn btn-danger">Phishing Attempt</button>
+        <button onclick="checkPhishingAnswer(false)" class="btn btn-success">Safe Email</button>
+      </div>
+      <div id="phishing-feedback" class="message"></div>
+    </div>
+
+    <!-- Message Display and Give Up Button -->
+    <div id="message" class="message"></div>
+    <div class="text-center mt-4">
+      <button onclick="endGameAndRedirect()" class="btn btn-danger">Give Up</button>
+    </div>
+  </div>
+  
+  <!-- Generate a random guest number and set it in the header, and set window.guestId -->
+  <script>
+    const guestNumber = Math.floor(Math.random() * 1000000);
+    document.getElementById("user-info").innerText = "Guest #" + guestNumber;
+    window.guestId = "Guest #" + guestNumber;
+    // Helper to get query parameter
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+  </script>
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="scripts.js"></script>
+  <script>
+    // Now that scripts.js is loaded, setDifficulty is available
+    window.onload = function() {
+      // Hide game sections initially
+      document.getElementById('level-info').style.display = 'none';
+      document.getElementById('password-section').style.display = 'none';
+      document.getElementById('scrambled-password-section').style.display = 'none';
+      document.getElementById('strong-password-section').style.display = 'none';
+      document.getElementById('tutorial-section').style.display = 'none';
+      // Hide Give Up button
+      var giveUp = document.getElementById('give-up-container');
+      if (giveUp) giveUp.style.display = 'none';
+      // Check for difficulty in query string
+      const diff = getQueryParam('difficulty');
+      if (diff === 'medium' || diff === 'hard') {
+        document.getElementById('difficulty-selection').style.display = 'none';
+        setDifficulty(diff);
+      } else {
+        // Show difficulty selection
+        document.getElementById('difficulty-selection').style.display = 'block';
+      }
+    };
+  </script>
+</body>
+</html>

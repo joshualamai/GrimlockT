@@ -1,0 +1,55 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 11 Dec 2024, 13:34:19
+    Author     : joshu
+*/
+body {
+    background-color: #2e8b57; /* Dark green background */
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+input {
+    padding: 10px;
+    margin: 10px;
+}
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #444;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #555;
+}
+.message {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+.level-info {
+    font-size: 1.5em;
+    margin-top: 30px;
+}
+.feedback {
+    color: yellow;
+    margin-top: 10px;
+}
+#scrambled-section {
+    margin-top: 20px;
+}
+
+#scrambled-timer {
+    font-size: 1.2em;
+    color: yellow;
+}
+#scrambled-password {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: yellow;
+}
